@@ -1,16 +1,29 @@
-import pandas as pd
+while True:
+  menu=input(''' Elija el tipo de archivo que desee procesar
+  1. CSV
+  2.MAT
+  3.Salir
+  ''')
+  if menu==1:
+    nombre_archivo = input("Ingrese el nombre del archivo con .csv")
+    sistema=Csv(nombre_archivo) #creo un objeto de tipo csv que tenga en self.datos el dataframe
+    sistema.cargar_datos() #cargo datos
 
-# 1. Cargas el archivo (asegúrate de que esté en la misma carpeta que este script)
-df = pd.read_csv('CalAIR_VA_2023.csv')
-
-# 2. Ver solo los nombres de las columnas
-print("Nombres de las columnas:")
-print(df.columns.tolist())
-
-# 3. Ver las primeras 5 filas para entender los datos
-print("\nPrimeras filas:")
-print(df.head())
-
-# 4. Ver qué tipo de datos hay (si son números o texto)
-print("\nInformación de tipos:")
-print(df.dtypes)
+    while True:
+      menu2=input(''' Elija lo que desea realizar con su archivo.csv
+      1.Mostrar la información básica del archivo
+      2. Graficar datos
+      3. Convertir PM25 a Micro (Map)
+      4. Clasificar Riesgo PM10(Apply)
+      5. Sumar Columnas
+      6.Remuestreo Temporal
+      7.Salir del submenu
+      ''')
+      if menu2=='1':
+        
+    
+  elif opcion_tipo == "2": # Si el usuario elige MAT
+    nombre_archivo = input("Ingrese el nombre del archivo .mat: ")
+    # objeto usando la clase Mat en lugar de Csv
+    #sistema = Mat(nombre_archivo)
+    
