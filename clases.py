@@ -193,3 +193,36 @@ class procesadorEEG():
         plt.subplots_adjust(hspace=0.8)
         plt.savefig('datosderivados_eeg.png') 
         plt.show()
+
+class Sistema():
+    def __init__(self):
+        self.__archivos_csv = [] #Contiene objetos Csv
+        self.__archivos_mat = [] #Contiene objetos procesadorEEG
+    def agregarArchivo(self, archivo,tipo):
+        if tipo == 'csv':
+            self.__archivos_csv.append(archivo)
+        else:
+            self.__archivos_mat.append(archivo)
+    def buscarArchivo(self, ruta,tipo):
+        if tipo == 'csv':
+            for archivo in self.__archivos_csv:
+                if archivo.tipo_archivo == ruta:
+                    print('El archivo ha sido encontrado')
+                    return archivo
+            print('El archivo no se ha encontrado en el sistema')
+            return None
+        else:
+            for archivo in self.__archivos_mat:
+                if archivo.ruta == ruta:
+                    print('El archivo ha sido encontrado')
+                    return archivo
+            print('El archivo no ha sido encontrado en el sistema')
+            return None
+        
+    def listarArchivos(self):
+        print('Los archivos csv en el sistema son:\n')
+        for archivo in self.__archivos_csv:
+            print(f'- {archivo.tipo_archivo}\n')
+        print('Los archivos mat en el sistema son:\n')
+        for archivo in self.__archivos_mat:
+            print(f'- {archivo.ruta}\n')

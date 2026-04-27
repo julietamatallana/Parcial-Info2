@@ -1,16 +1,20 @@
-from clases import Csv, procesadorEEG
+from clases import Csv, procesadorEEG, Sistema
 
+sistema = Sistema()
 while True:
   menu = int(input(''' Elija el tipo de archivo que desee procesar
   1. CSV  
   2. MAT
-  3. Salir
+  3. Buscar un archivo en el sistema
+  4. Mostrar archivos ingresados en el sistema
+  5. Salir
   '''))
   if menu == 1:
     ruta = input("Ingrese la dirección del archivo .csv: ")
     try:
       archivo = Csv(ruta) #creo un objeto de tipo csv que tenga en self.datos el dataframe
       archivo.cargar_datos() #cargo datos
+      sistema.agregarArchivo(archivo,'csv')
     except FileNotFoundError:
       print('El archivo no se encontró. Intente nuevamente')
       continue
@@ -74,6 +78,7 @@ while True:
     try:
       archivo = procesadorEEG(ruta) #creo un objeto de tipo csv que tenga en self.datos el dataframe
       archivo.setDatos() #cargo datos
+      sistema.agregarArchivo(archivo,'mat')
     except FileNotFoundError:
       print('El archivo no se encontró. Intente nuevamente')
       continue
@@ -81,7 +86,7 @@ while True:
     while True:
       menu2 = int(input('Eliga la opción que desea realizar\n1. Mostrar llaves del archivo\n2. Sumar canales\n3. Analizar datos derivados\n4. Salir\n'))
       if menu2 == 1:
-        print(f'Las llaves del arhivo .mat son: {archivo.getKeys()}')
+        print(f'Las llaves del archivo .mat son: {archivo.getKeys()}')
       elif menu2 == 2:
         canal1 = int(input('Ingrese el primer canal que desea sumar(0-7): '))
         canal2 = int(input('Ingrese el segundo canal que desea sumar(0-7): '))
@@ -96,6 +101,9 @@ while True:
 
       elif menu2 == 3:
         eje = int(input('Ingrese el eje a través del cual quiere calcular los datos derivados: '))
+        while eje not in [0,1,2]:
+          print('Debe ingresar un eje válido (0,1,2)')
+          eje = int(input('Ingrese el eje a través del cual quiere calcular los datos derivados: '))
         archivo.datosDerivados(eje)
       elif menu2 == 4:
         print('Muchas gracias por utilizar nuestro programa')
@@ -103,7 +111,24 @@ while True:
       else:
         print('Ingrese una opción válida del menú')
         continue
+
   elif menu == 3:
+    tipo = input('Ingrese el tipo de archivo que desea buscar (csv,mat): ')
+    while tipo not in ['csv','mat']:
+      print('El archivo debe ser csv o mat. Inténtelo de nuevo')
+      tipo = input('Ingrese el tipo de archivo que desea buscar (csv,mat): ')
+    ruta = input('Ingrese la ruta del archivo que desea buscar: ')
+    archivo = sistema.buscarArchivo(ruta,tipo)
+    if archivo != None:
+      print('A continuación se muestra una vista previa del archivo')
+      if tipo == 'csv':
+        print(archivo.get_datos().head(20))
+      else:
+        print(archivo.getKeys())
+    
+  elif menu == 4:
+    sistema.listarArchivos()
+  elif menu == 5:
     print('Muchas gracias por utilizar nuestro programa')
     break
   else:
